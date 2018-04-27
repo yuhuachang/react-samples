@@ -1,0 +1,23 @@
+{
+  "name": "my-iot-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "aws-iot-device-sdk": "^2.2.1",
+    "aws-sdk": "^2.229.1",
+    "bootstrap": "^4.1.0",
+    "crypto-js": "^3.1.9-1",
+    "moment": "^2.22.1",
+    "paho.mqtt.js": "^2.0.5",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-scripts": "1.1.4",
+    "reactstrap": "^5.0.0-beta.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
