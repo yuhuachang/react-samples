@@ -2,6 +2,45 @@ import moment from 'moment';
 import CryptoJS from 'crypto-js';
 import MQTT from 'paho.mqtt.js';
 
+/**
+ * I used WebSocket several times.  I tried Tomcat, SpringBoot with STOMP,
+ * and nodejs and express.  All of these needs a server.  I want a serverless
+ * solution on AWS.  When I do the IoT project, I tried AWS IoT and it
+ * supports MQTT over WebSocket.  So using AWS IoT as a WebSocket server
+ * may be a solution.
+ * 
+ * Previously, I only tried to connect AWS IoT from my
+ * hardware with nodejs code using AWS IoT SDK https://github.com/aws/aws-iot-device-sdk-js.
+ * We can use TCP or WebSocket to connect AWS IoT.
+ * The example in AWS IoT SDK shows us the way to connect with TCP.
+ * We need to install certificate to have secured connection.
+ * This seems overkilld from a browser.  The document and examples shows
+ * nothing about connecting via WebSocket without these cerficicate files.
+ * 
+ * Then I searched and found many people have the same idea like these:
+ * https://forums.aws.amazon.com/thread.jspa?messageID=767105
+ * https://dzone.com/articles/websockets-with-aws-lambda
+ * https://medium.com/@jparreira/receiving-aws-iot-messages-in-your-browser-using-websockets-9b87f28c2357
+ * https://medium.com/@Prestomation/hacking-the-aws-js-sdk-signing-aws-iot-websockets-in-the-browser-using-the-aws-js-sdk-153b23203db
+ * But none of them show very clearly how to do it until I found this:
+ * https://github.com/dwyl/learn-aws-iot
+ * and its idea is from this:
+ * https://dev.classmethod.jp/cloud/aws/aws-iot-mqtt-over-websocket/
+ * 
+ * The implementation is now clear and working.  To connect to AWS IoT,
+ * we do not need AWS IoT SDK for JavaScript.  We need a MQTT client that
+ * can transmit by WebSocket.  We need an AWS IAM account with accessKey
+ * to connect to AWS IoT.  Since this accessKey will be distributed to
+ * the browser, the account's permission should be limited to only IoT
+ * operations.  After that, we can connect to our IoT endpoint just like
+ * we browse a website.
+ * 
+ * The later actions are not mentioned here.  Usually we will trigger a
+ * Lambda function, do authentication, and do other jobs.
+ * 
+ * Other ref:
+ * https://eclipse.org/paho/clients/js/
+ */
 class SigV4Utils {
 
   static sign(key, msg) {
